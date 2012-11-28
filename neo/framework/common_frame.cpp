@@ -716,29 +716,29 @@ void idCommonLocal::RunDoomClassicFrame() {
 		DoomLib::expansionDirty = false;
 	}
 
-	if ( DoomLib::Interface.Frame( doomTics, &userCmdMgr ) ) {
-		Globals *data = (Globals*)DoomLib::GetGlobalData( 0 );
+    if ( DoomLib::Interface.Frame( doomTics, &userCmdMgr ) ) {
+        Globals *data = (Globals*)DoomLib::GetGlobalData( 0 );
 
-		// Do the palette lookup.
-		for ( int row = 0; row < DOOMCLASSIC_RENDERHEIGHT; ++row ) {
-			for ( int column = 0; column < DOOMCLASSIC_RENDERWIDTH; ++column ) {
-				const int doomScreenPixelIndex = row * DOOMCLASSIC_RENDERWIDTH + column;
-				const colormapindex_t paletteIndex = data->screens[0][doomScreenPixelIndex];
+        // Do the palette lookup.
+        for ( int row = 0; row < DOOMCLASSIC_RENDERHEIGHT; ++row ) {
+            for ( int column = 0; column < DOOMCLASSIC_RENDERWIDTH; ++column ) {
+                const int doomScreenPixelIndex = row * DOOMCLASSIC_RENDERWIDTH + column;
+                const colormapindex_t paletteIndex = data->screens[0][doomScreenPixelIndex];
 
                 const unsigned int paletteColor = data->XColorMap[paletteIndex];
 
-				byte red = (paletteColor & 0xFF000000) >> 24;
-				byte green = (paletteColor & 0x00FF0000) >> 16;
-				byte blue = (paletteColor & 0x0000FF00) >> 8;
+                const byte red = (paletteColor & 0xFF000000) >> 24;
+                const byte green = (paletteColor & 0x00FF0000) >> 16;
+                const byte blue = (paletteColor & 0x0000FF00) >> 8;
 
-				const int imageDataPixelIndex = row * DOOMCLASSIC_RENDERWIDTH * DOOMCLASSIC_BYTES_PER_PIXEL + column * DOOMCLASSIC_BYTES_PER_PIXEL;
-				doomClassicImageData[imageDataPixelIndex]		= red;
-				doomClassicImageData[imageDataPixelIndex + 1]	= green;
-				doomClassicImageData[imageDataPixelIndex + 2]	= blue;
-				doomClassicImageData[imageDataPixelIndex + 3]	= 255;
-			}
-		}
-	}
+                const int imageDataPixelIndex = row * DOOMCLASSIC_RENDERWIDTH * DOOMCLASSIC_BYTES_PER_PIXEL + column * DOOMCLASSIC_BYTES_PER_PIXEL;
+                doomClassicImageData[imageDataPixelIndex]		= red;
+                doomClassicImageData[imageDataPixelIndex + 1]	= green;
+                doomClassicImageData[imageDataPixelIndex + 2]	= blue;
+                doomClassicImageData[imageDataPixelIndex + 3]	= 255;
+            }
+        }
+    }
 
 	renderSystem->UploadImage( "_doomClassic", doomClassicImageData.Ptr(), DOOMCLASSIC_RENDERWIDTH, DOOMCLASSIC_RENDERHEIGHT );
 	doomTics++;

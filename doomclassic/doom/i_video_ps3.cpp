@@ -171,7 +171,7 @@ void I_SetPalette (byte* palette)
     for (int c = 0; c < NUMCOLORMAPS; ++c)
     {
         // Find the darkening scale for this colormap:
-        scale = (256 - 8 * c);
+        scale = (256 - (256 / NUMCOLORMAPS) * c);
 
 	    // set the X colormap entries
 	    for (i = 0; i < 256; ++i)
@@ -182,7 +182,7 @@ void I_SetPalette (byte* palette)
 		    g = palette[i*3+1];
 		    b = palette[i*3+2];
 
-            // Darken the color to black according to light level (0-31) where 0 is full bright and 31 is full dark:
+            // Darken the color to black according to light level [0..(NUMCOLORMAPS-1)] where 0 is full bright and (NUMCOLORMAPS-1) is full dark:
             r = gammatable[::g->usegamma][(r * scale) / 256];
             g = gammatable[::g->usegamma][(g * scale) / 256];
             b = gammatable[::g->usegamma][(b * scale) / 256];
